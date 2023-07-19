@@ -4,27 +4,30 @@ import { User } from "@clerk/nextjs/dist/types/server";
 import { redirect } from "next/navigation";
 
 const createNewUser = async () => {
-	const user: User = (await currentUser()) as User;
-	const { id, emailAddresses } = user;
-	// console.log(emailAddresses, "user");
-	const isUser = await prisma.user.findUnique({
+	const user = (await currentUser()) as User;
+	console.log(user);
+
+	const match = await prisma.user.findUnique({
 		where: {
-			clerkId: id,
+			clerkId: user.id as string,
 		},
 	});
-	console.log(isUser, "isUser");
-	if (!isUser) {
-		const createUser = await prisma.user.create({
+	// console.log(match?.clerkId !== user.id);
+	if (!(match?.clerkId !== user.id)) {
+		await prisma.user.create({
 			data: {
-				clerkId: id,
-				email: emailAddresses[0].emailAddress,
+				clerkId: user.id,
+				email: user?.emailAddresses[0].emailAddress,
 			},
 		});
 	}
+
 	redirect("/journal");
 };
-const NewUserPage = async () => {
+
+const NewUser = async () => {
 	await createNewUser();
-	return <div>NewUserPage</div>;
+	return <div>...loading</div>;
 };
-export default NewUserPage;
+
+export default NewUser;
