@@ -1,4 +1,5 @@
 import { UserButton } from "@clerk/nextjs";
+import Link from "next/link";
 
 const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
 	return (
@@ -6,6 +7,11 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
 			<aside className="absolute left-0 top-0 h-full w-[200px] border-r border-black/10">
 				<div className="px-4 my-4">
 					<span className="text-3xl">MOOD</span>
+					<div className="mt-5">
+						<Link href="/journal" className="text-2xl font-semibold">
+							Journal
+						</Link>
+					</div>
 				</div>
 				{/* <div>
             <ul className="px-4">
